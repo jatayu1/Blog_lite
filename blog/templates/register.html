@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Register
+{% endblock %}
+
+{% block content %}
+<section class="login" id="login">
+    <div class="login-text messages">
+        <h1>Blog Lite</h1>
+        <h3>Blog Lite helps you connect and share with the people in your life.</h3>
+    </div>
+    <div class="login-text form shadow">
+        <h3 class="form-heading">Create new Account</h3>
+        <form method="POST" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <!-- Username -->
+            <div class="mb-3">
+                {{ form.fullname(class="form-control", placeholder="Full Name") }}
+            </div>
+            <div class="mb-3">
+                {{ form.username(class="form-control", placeholder="Username") }}
+            </div>
+            <div class="mb-3">
+                {{ form.email(class="form-control", placeholder="Email Address") }}
+            </div>
+            <div class="mb-3">
+                {{ form.password1(class="form-control", placeholder="Password") }}
+            </div>
+            <div class="mb-3">
+                {{ form.password2(class="form-control", placeholder="Confirm Password") }}
+            </div>
+            <div class="d-grid gap-2">
+                {{ form.submit(class = "btn btn-1") }}
+            </div>
+            <hr>
+            <div class="d-grid gap-2">
+                <a href="{{ url_for('login_page') }}" class="btn btn-primary">Already have an account</a>
+              </div>
+          </form>
+    </div>
+</section>
+{% endblock %}

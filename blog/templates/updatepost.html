@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Post Update
+{% endblock %}
+
+{% block content %}
+<section class="login" id="login">
+    <div class="login-text form shadow">
+        <h3 class="form-heading">Update Post</h3>
+        <form method="POST" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <div class="container">
+                <!-- Title -->
+                <div class="row">
+                  <div class="col col-1">
+                    <h6>{{ form.post_title.label(class="form-label") }}</h6>
+                  </div>
+                  <div class="col col-2">
+                    {{ form.post_title(class="form-control", placeholder="Full Name", value = post.post_title) }}
+                  </div>
+                </div>
+                <br>
+
+                <!-- caption -->
+                <div class="row">
+                  <div class="col col-1">
+                    <h6>{{ form.post_text.label(class="form-label") }}</h6>
+                  </div>
+                  <div class="col col-2">
+                    {{ form.post_text(class="form-control", placeholder="Username", value = post.post_text) }}
+                  </div>
+                </div>
+                <br>
+
+                <!-- post picture -->
+                <div class="row">
+                    <div class="col col-1">
+                      <h6>{{ form.post_picture.label(class="form-label") }}</h6>
+                    </div>
+                    <div class="col col-2">
+                      {{ form.post_picture(class="form-control-file") }}
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="d-grid gap-2">
+                {{ form.submit(class = "btn btn-1") }}
+            </div>
+          </form>
+    </div>
+</section>
+{% endblock %}

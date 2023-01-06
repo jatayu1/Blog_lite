@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ user.username }}
+{% endblock %}
+
+{% block content %}
+<section class="container dashboard">
+    <aside class="sidebar container shadow">
+      <div class="side-nav">
+        <div class="profile-data container">
+            <img src="{{ url_for('static',filename = user.profilePicture) }}" class="float-start profile-img" alt="...">
+            <h3 class="profile-name">{{ user.fullname }}</h3>
+            <br>
+            <div class="container text-center sidebar-follow">
+              <div class="row">
+                <div class="col">
+                  {{ user.PostCount() }}
+                  <br>
+                  <strong>Posts</strong>
+                </div>
+                <div class="col">
+                  {{ user.followed.count()-1 }}
+                  <br>
+                  <strong><a href="{{ url_for('showfollowing', username=user.username) }}">Following</a></strong>
+                </div>
+                <div class="col">
+                  {{ user.followers.count()-1 }}
+                  <br>
+                  <strong><a href="{{ url_for('showfollowers', username=user.username) }}">Followers</a></strong>
+                </div>
+              </div>
+          </div>
+        {% if current_user.username == user.username %}
+        <a href="{{ url_for('updateUser_page') }}" class="btn btn-primary">Update Profile</a>
+        {% elif not current_user.is_following(user) %}
+        <a href="{{ url_for('follow', username=user.username) }}" class="btn btn-primary">Follow</a>
+        {% else %}
+        <a href="{{ url_for('unfollow', username=user.username) }}" class="btn btn-primary">Unfollow</a>
+        {% endif %}
+        </div>
+
+        <br>
+
+        <div class="list-group">
+          <a href="{{ url_for('home_page') }}" class="list-group-item list-group-item-action">Dashboard</a>
+          <a href="{{ url_for('user_page', user = current_user.username) }}" class="list-group-item list-group-item-action">My Account</a>
+          <a href="{{ url_for('home_page') }}" class="list-group-item list-group-item-action">Create New Post</a>
+          <a href="{{ url_for('search_page') }}" class="list-group-item list-group-item-action">Search</a>
+        </div>
+      </div>
+    </aside>
+    <main class="main-dashboard container">
+        <div class="allposts">
+            {% for post in user.myPosts() %}
+            <div class="card posts shadow">
+                <div class="card-body">
+                  <div class="container Post-reactions">
+                    <div class="row">
+                      <div class="col">
+                        <img src="{{ url_for('static',filename = post.author.profilePicture) }}" class="float-start profile-img-thumb">
+                        <a href="{{ url_for('user_page', user = post.author.username ) }}" class="all-post-user-link">{{ post.author.username }}</a>
+                      </div>
+                      {% if user.username == current_user.username %}
+                      <div class="col post-del-edit">
+                        <a href="{{ url_for('deletepost', id = post.id ) }}" class="btn btn-primary">Delete</a> / 
+                        <a href="{{ url_for('editpost', id = post.id ) }}" class="btn btn-primary">Edit</a>
+                      </div>
+                      {% endif %}
+                    </div>
+                  </div>
+                  <hr>
+                  <h5>{{ post.post_title }}</h5>
+                    {{ post.post_text }}
+                    {% for image in img %}
+                      {% if image.post_id == post.id %}
+                        <br><br>
+                        <div class="img-box rounded">
+                          <img src="{{ url_for('static',filename =image.photo) }}" class="post-media img-fluid rounded">
+                        </div>
+                      {% endif %}
+                    {% endfor %}
+                </div>
+                <hr>
+                <div class="container text-center Post-reactions">
+                  <div class="row">
+                    <div class="col">
+                      <i class="bi bi-hand-thumbs-up"> Like</i>
+                    </div>
+                    <div class="col">
+                      <i class="bi bi-chat"> Comment</i>
+                    </div>
+                    <div class="col">
+                      <i class="bi bi-share"> Share</i>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </main>
+</section>
+{% endblock %}

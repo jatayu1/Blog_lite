@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block content %}
+<section class="container dashboard">
+    <aside class="sidebar container shadow">
+      <div class="side-nav">
+        <div class="profile-data container">
+            <img src="{{ url_for('static',filename = current_user.profilePicture) }}" class="float-start profile-img">
+            <h3 class="profile-name">{{ current_user.fullname }}</h3>
+            <div class="container text-center sidebar-follow">
+                <div class="row">
+                  <div class="col">
+                    {{ current_user.PostCount() }}
+                    <br>
+                    <strong>Posts</strong>
+                  </div>
+                  <div class="col">
+                    {{ current_user.followed.count()-1 }}
+                    <br>
+                    <strong><a href="{{ url_for('showfollowing', username=current_user.username) }}">Following</a></strong>
+                  </div>
+                  <div class="col">
+                    {{ current_user.followers.count()-1 }}
+                    <br>
+                    <strong><a href="{{ url_for('showfollowers', username=current_user.username) }}">Followers</a></strong>
+                  </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="list-group">
+            <a href="{{ url_for('home_page') }}" class="list-group-item list-group-item-action">Dashboard</a>
+            <a href="{{ url_for('user_page', user = current_user.username) }}" class="list-group-item list-group-item-action">My Account</a>
+            <a href="{{ url_for('home_page') }}" class="list-group-item list-group-item-action">Create New Post</a>
+            <a href="{{ url_for('search_page') }}" class="list-group-item list-group-item-action">Search</a>
+          </div>
+        </div>
+    </aside>
+    <main class="main-dashboard container">
+        <div class="card container shadow add-post">
+            <form method="POST" class="card-body" enctype="multipart/form-data">
+                {{ form.hidden_tag() }}
+                <div class="mb-3">
+                  <div class="container text-center">
+                    <div class="row">
+                      <div class="col col-1">
+                        <h6>{{ form.post_title.label(class="form-label") }}</h6>
+                      </div>
+                      <div class="col col-2">
+                        {{ form.post_title(class="form-control", placeholder="Post Title") }}
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col col-1">
+                        <h6>{{ form.post_text.label(class="form-label") }}</h6>
+                      </div>
+                      <div class="col col-2">
+                        {{ form.post_text(class="form-control", placeholder="Start a post") }}
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col col-1">
+                        <h6>{{ form.post_picture.label(class="form-label") }}</h6>
+                      </div>
+                      <div class="col col-2">
+                        {{ form.post_picture(class="form-control-file") }}
+                      </div>
+                    </div>
+                </div>
+                <div class="d-grid gap-2">
+                    {{ form.submit(class = "btn btn-primary") }}
+                </div>
+              </form>
+          </div>
+        </div>
+        <hr>       
+        <div class="allposts">
+            {% for post in current_user.followedPosts() %}
+            <div class="card posts shadow">
+                <div class="card-body">
+                  <div class="container text-center">
+                    <div class="row">
+                      <div class="col col-a">
+                        <img src="{{ url_for('static',filename = post.author.profilePicture) }}" class="float-start profile-img-thumb">
+                        <a href="{{ url_for('user_page', user = post.author.username ) }}" class="all-post-user-link">{{ post.author.username }}</a>
+                      </div>
+                    </div>
+                  </div>
+                    <hr>
+                    <h5>{{ post.post_title }}</h5>
+                    {{ post.post_text }}
+                    {% for image in img %}
+                      {% if image.post_id == post.id %}
+                        <br><br>
+                        <div class="img-box rounded">
+                          <img src="{{ url_for('static',filename =image.photo) }}" class="post-media img-fluid rounded">
+                        </div>
+                      {% endif %}
+                    {% endfor %}
+                </div>
+                <hr>
+                <div class="container text-center Post-reactions">
+                  <div class="row">
+                    <div class="col">
+                      <i class="bi bi-hand-thumbs-up"> Like</i>
+                    </div>
+                    <div class="col">
+                      <i class="bi bi-chat"> Comment</i>
+                    </div>
+                    <div class="col">
+                      <i class="bi bi-share"> Share</i>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </main>
+</section>
+{% endblock %}

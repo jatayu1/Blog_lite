@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Search
+{% endblock %}
+
+{% block content %}
+
+<div class="card container shadow search-form">
+    <form method="POST" class="card-body">
+        {{ form.hidden_tag() }}
+        <div class="mb-3">
+            <div class="container text-center">
+                <div class="row">
+                    <div class="col">
+                        {{ form.search(class="form-control", placeholder="Search a Username") }}
+                    </div>
+                </div>
+            </div>
+            <div class="d-grid gap-2">
+                {{ form.submit(class = "btn btn-primary") }}
+            </div>
+        </div>
+    </form>
+</div>
+
+<hr>
+{% if user_data %}
+<div class="container search-result card">
+{% for user in user_data %}
+    <div class="card shadow">
+        <a href="{{ url_for('user_page', user = user.username ) }}"><h5>{{ user.fullname }}</h5></a>
+        <a href="{{ url_for('user_page', user = user.username ) }}"><span>({{ user.username }})</span></a>
+        {% if not current_user.is_following(user) %}
+        <a href="{{ url_for('follow', username=user.username) }}" class="btn btn-primary">Follow</a>
+        {% else %}
+        <a href="{{ url_for('unfollow', username=user.username) }}" class="btn btn-primary">Unfollow</a>
+        {% endif %}
+    </div>
+    <br>
+{% endfor %}
+</div>
+{% endif %}
+   
+{% endblock %}

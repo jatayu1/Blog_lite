@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Update Account
+{% endblock %}
+
+{% block content %}
+<section class="login" id="login">
+    <div class="login-text form shadow">
+        <h3 class="form-heading">Update Account</h3>
+        <form method="POST" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <div class="container">
+                <!-- full name -->
+                <div class="row">
+                  <div class="col col-1">
+                    <h6>{{ form.fullname.label(class="form-label") }}</h6>
+                  </div>
+                  <div class="col col-2">
+                    {{ form.fullname(class="form-control", placeholder="Full Name", value = current_user.fullname) }}
+                  </div>
+                </div>
+                <br>
+                <!-- username -->
+                <div class="row">
+                  <div class="col col-1">
+                    <h6>{{ form.username.label(class="form-label") }}</h6>
+                  </div>
+                  <div class="col col-2">
+                    {{ form.username(class="form-control", placeholder="Username", value = current_user.username) }}
+                  </div>
+                </div>
+                <br>
+                <!-- email -->
+                <div class="row">
+                  <div class="col col-1">
+                    <h6>{{ form.email.label(class="form-label") }}</h6>
+                  </div>
+                  <div class="col col-2">
+                    {{ form.email(class="form-control", placeholder="Email Address", value = current_user.email) }}
+                  </div>
+                </div>
+                <br>
+                <!-- profile picture -->
+                <div class="row">
+                    <div class="col col-1">
+                      <h6>{{ form.Profile_picture.label(class="form-label") }}</h6>
+                    </div>
+                    <div class="col col-2">
+                      {{ form.Profile_picture(class="form-control-file") }}
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="d-grid gap-2">
+                {{ form.submit(class = "btn btn-1") }}
+            </div>
+          </form>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Following
+{% endblock %}
+
+{% block content %}
+<section class="container dashboard">
+    <aside class="sidebar container shadow">
+      <div class="side-nav">
+        <div class="profile-data container">
+            <img src="{{ url_for('static',filename = current_user.profilePicture) }}" class="float-start profile-img">
+            <h3 class="profile-name">{{ current_user.fullname }}</h3>
+            <div class="container text-center sidebar-follow">
+                <div class="row">
+                  <div class="col">
+                    {{ current_user.PostCount() }}
+                    <br>
+                    <strong>Posts</strong>
+                  </div>
+                  <div class="col">
+                    {{ current_user.followed.count()-1 }}
+                    <br>
+                    <strong><a href="{{ url_for('showfollowing', username=current_user.username) }}">Following</a></strong>
+                  </div>
+                  <div class="col">
+                    {{ current_user.followers.count()-1 }}
+                    <br>
+                    <strong><a href="{{ url_for('showfollowers', username=current_user.username) }}">Followers</a></strong>
+                  </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="list-group">
+          <a href="{{ url_for('home_page') }}" class="list-group-item list-group-item-action">Dashboard</a>
+          <a href="{{ url_for('user_page', user = current_user.username) }}" class="list-group-item list-group-item-action">My Account</a>
+          <a href="{{ url_for('home_page') }}" class="list-group-item list-group-item-action">Create New Post</a>
+          <a href="#" class="list-group-item list-group-item-action">Search</a>
+        </div>
+        </div>
+    </aside>
+    <main class="main-dashboard container">
+        <div class="container card follow-card text-center">
+            <h3 class="heading">{{ user.username }} follows</h3>
+            <hr>
+            {% for follower in user.followed %}
+            {% if follower != user %}
+            <a href="{{ url_for('user_page', user = follower.username) }}">{{ follower.fullname }}</a>
+            {% endif %}
+        {% endfor %}
+        </div>
+    </main>
+</section>
+{% endblock %}
