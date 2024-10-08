@@ -9,7 +9,7 @@ app.config['SECRET_KEY'] = '243ef63c51652af61f3027df'
 UPLOAD_FOLDER = 'blog/static/'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 db = SQLAlchemy(app)
-db.init_app(app)
+# db.init_app(app)
 app.app_context().push()
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
